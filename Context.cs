@@ -6,7 +6,7 @@ namespace spacewar;
 abstract class Context { 
     private SpriteBatch _spriteBatch;
 
-    public Context(SpriteBatch spriteBatch)
+    protected Context(SpriteBatch spriteBatch)
     {
        _spriteBatch = spriteBatch; 
     }
