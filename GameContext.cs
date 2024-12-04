@@ -4,25 +4,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace spacewar;
 
-class GameContext : IContext
+class GameContext : Context
 {
     public string Username { get; set; }
     Spaceship spaceship;
-    public GameContext()
+    public GameContext(GraphicsDeviceManager device) : base(device)
     {
-        this.spaceship = new Spaceship();
+        this.spaceship = new Spaceship(device);
     }
-    public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
     {
         spaceship.Draw(device, spriteBatch, gameTime);
     }
 
-    public void LoadContent(ContentManager content)
+    public override void LoadContent(ContentManager content)
     {
         spaceship.LoadContent(content);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         spaceship.Update(gameTime);
     }

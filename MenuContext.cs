@@ -5,7 +5,7 @@ using System;
 
 namespace spacewar;
 
-class MenuContext : IContext
+class MenuContext : Context
 {
 
     Button startButton;
@@ -13,22 +13,22 @@ class MenuContext : IContext
     TextInput usernameInput;
     public event EventHandler<StartGameEventArgs> startGame;
 
-    public MenuContext()
+    public MenuContext(GraphicsDeviceManager device) : base(device)
     {
         // initialize start button
-        startButton = new Button("Button", "Button_Hover", "Button_Click");
+        startButton = new Button("Button", "Button_Hover", "Button_Click", device);
         startButton.SetFont("Menu", "Start Game", Color.White);
         startButton.SetScale(2.0f, 1.0f);
 
-        scoreboardButton = new Button("Button", "Button_Hover", "Button_Click");
+        scoreboardButton = new Button("Button", "Button_Hover", "Button_Click", device);
         scoreboardButton.SetFont("Menu", "Scoreboard", Color.White);
         scoreboardButton.SetScale(1.5f, 0.5f);
 
-        usernameInput = new TextInput("Player Name", "Menu", Color.White, 1.0f);
+        usernameInput = new TextInput("Player Name", "Menu", Color.White, 1.0f, device);
 
     }
 
-    public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
     {
         var centerX = device.PreferredBackBufferWidth / 2;
         var centerY = device.PreferredBackBufferHeight / 2;
@@ -42,14 +42,14 @@ class MenuContext : IContext
 
     }
 
-    public void LoadContent(ContentManager content)
+    public override void LoadContent(ContentManager content)
     {
         startButton.LoadContent(content);
         scoreboardButton.LoadContent(content);
         usernameInput.LoadContent(content);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         startButton.Update(gameTime);
         scoreboardButton.Update(gameTime);

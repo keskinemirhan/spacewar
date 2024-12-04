@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
 
-class TextInput : IContext
+class TextInput : Context
 {
     public string content = "";
     string title = "Text";
@@ -18,7 +18,7 @@ class TextInput : IContext
     bool keydown = false;
     Keys pressedKey = Keys.None;
 
-    public TextInput(string title, string fontName, Color colormask, float fontScale)
+    public TextInput(string title, string fontName, Color colormask, float fontScale, GraphicsDeviceManager device) : base(device)
     {
         this.title = title;
         this.fontName = fontName;
@@ -36,7 +36,7 @@ class TextInput : IContext
         this.colormask = colormask;
     }
 
-    public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
     {
         Vector2 textpos = new Vector2(position.X, position.Y);
         string text = title + " : " + content + "_";
@@ -46,12 +46,12 @@ class TextInput : IContext
                 textpos, colormask, 0, textorigin, fontScale, SpriteEffects.None, 0.5f);
     }
 
-    public void LoadContent(ContentManager content)
+    public override void LoadContent(ContentManager content)
     {
         spriteFont = content.Load<SpriteFont>(fontName);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         var keys = Keyboard.GetState().GetPressedKeys();
         if (keys.Length == 0) keydown = false;

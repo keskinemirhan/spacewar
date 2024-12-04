@@ -6,7 +6,7 @@ namespace spacewar;
 
 public class Game1 : Game
 {
-    IContext currentContext;
+    Context currentContext;
     GameContext gameContext;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
@@ -21,9 +21,9 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        var menuContext = new MenuContext();
+        var menuContext = new MenuContext(_graphics);
         currentContext = menuContext;
-        gameContext = new GameContext();
+        gameContext = new GameContext(_graphics);
         menuContext.startGame += (e, args) =>
         {
             gameContext.Username = args.Username;

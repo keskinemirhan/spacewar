@@ -6,16 +6,21 @@ using System;
 
 namespace spacewar;
 
-class Spaceship : IContext
+class Spaceship : Context
 {
     Texture2D fullHealthTexture;
-    Vector2 position = new Vector2(120, 120);
+    Vector2 position;
 
     public int Health { get; private set; }
     public int Damage { get; private set; }
     float speed = 100.0f;
     float direction = MathHelper.Pi * 2;
 
+    public Spaceship(GraphicsDeviceManager device) : base(device)
+    {
+        position.X = device.PreferredBackBufferWidth / 2;
+        position.Y = device.PreferredBackBufferHeight / 2;
+    }
 
     public void Move(float rotation, float elapsed)
     {
@@ -25,7 +30,7 @@ class Spaceship : IContext
 
     }
 
-    public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
     {
         spriteBatch.Draw(
                 fullHealthTexture,
@@ -41,13 +46,13 @@ class Spaceship : IContext
 
     }
 
-    public void LoadContent(ContentManager content)
+    public override void LoadContent(ContentManager content)
     {
         fullHealthTexture = content.Load<Texture2D>("MainShipFull");
 
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         var keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.Left))

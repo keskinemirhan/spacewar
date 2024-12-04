@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
-class Button : IContext
+class Button : Context
 {
     Texture2D bgTexture;
     Texture2D bgTextureHover;
@@ -29,7 +29,7 @@ class Button : IContext
     float bgScale = 1.0f;
     float fontScale = 1.0f;
 
-    public Button(string bgTextureNormalStr, string bgTextureHoverStr, string bgTextureClickStr)
+    public Button(string bgTextureNormalStr, string bgTextureHoverStr, string bgTextureClickStr, GraphicsDeviceManager device) : base(device)
     {
         this.bgTextureNormalStr = bgTextureNormalStr;
         this.bgTextureHoverStr = bgTextureHoverStr;
@@ -55,7 +55,7 @@ class Button : IContext
         position = new Vector2(X, Y);
     }
 
-    public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
     {
         bgTexture = isHovered ? isClicked ? bgTextureClick : bgTextureHover : bgTextureNormal;
         spriteBatch.Draw(
@@ -80,7 +80,7 @@ class Button : IContext
 
     }
 
-    public void LoadContent(ContentManager content)
+    public override void LoadContent(ContentManager content)
     {
         spriteFont = content.Load<SpriteFont>(fontName);
         bgTextureNormal = content.Load<Texture2D>(bgTextureNormalStr);
@@ -89,7 +89,7 @@ class Button : IContext
         bgTexture = bgTextureNormal;
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         var mouseState = Mouse.GetState();
         var XRight = position.X + bgTexture.Width * bgScale / 2;
