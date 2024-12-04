@@ -9,6 +9,7 @@ class MenuContext : IContext
 
     Button startButton;
     Button scoreboardButton;
+    TextInput usernameInput;
 
     public MenuContext()
     {
@@ -21,6 +22,8 @@ class MenuContext : IContext
         scoreboardButton.SetFont("Menu", "Scoreboard", Color.White);
         scoreboardButton.SetScale(1.5f, 0.5f);
 
+        usernameInput = new TextInput("Player Name", "Menu", Color.White, 1.0f);
+
     }
 
     public void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
@@ -29,8 +32,11 @@ class MenuContext : IContext
         var centerY = device.PreferredBackBufferHeight / 2;
         startButton.SetPosition(centerX, centerY);
         scoreboardButton.SetPosition(centerX, centerY + 70);
+        usernameInput.SetPosition(centerX, centerY - 120);
         startButton.Draw(device, spriteBatch, gameTime);
         scoreboardButton.Draw(device, spriteBatch, gameTime);
+        usernameInput.Draw(device, spriteBatch, gameTime);
+
 
     }
 
@@ -38,11 +44,20 @@ class MenuContext : IContext
     {
         startButton.LoadContent(content);
         scoreboardButton.LoadContent(content);
+        usernameInput.LoadContent(content);
     }
 
     public void Update(GameTime gameTime)
     {
         startButton.Update(gameTime);
         scoreboardButton.Update(gameTime);
+        usernameInput.Update(gameTime);
+        if (startButton.isClicked)
+        {
+            if (usernameInput.content.Length == 0)
+            {
+                usernameInput.SetColorMask(Color.Red);
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ class Button : IContext
     Vector2 position = new Vector2(0, 0);
 
     bool isHovered = false;
-    bool isClicked = false;
+    public bool isClicked = false;
 
     bool hasText = false;
     Color colormask;
@@ -71,7 +71,7 @@ class Button : IContext
         if (hasText)
         {
             Vector2 textpos = new Vector2(position.X,
-                     isClicked ? position.Y + bgScale :position.Y);
+                     isClicked ? position.Y + bgScale : position.Y);
             Vector2 textorigin = spriteFont.MeasureString(text) / 2;
 
             spriteBatch.DrawString(spriteFont, text,
