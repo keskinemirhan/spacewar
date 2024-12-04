@@ -6,6 +6,7 @@ namespace spacewar;
 
 public class Game1 : Game
 {
+    IContext currentContext;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -19,6 +20,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
+        currentContext = new MenuContext();
+
 
         base.Initialize();
     }
@@ -26,6 +29,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        currentContext.LoadContent(Content);
 
         // TODO: use this.Content to load your game content here
     }
@@ -34,7 +38,8 @@ public class Game1 : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        
+        currentContext.Update(gameTime);
+
         // TODO: Add your update logic here
 
         base.Update(gameTime);
@@ -43,7 +48,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+        currentContext.Draw(_graphics, _spriteBatch, gameTime);
+        _spriteBatch.End();
         // TODO: Add your drawing code here
         //
         base.Draw(gameTime);
