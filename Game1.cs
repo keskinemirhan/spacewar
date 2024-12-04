@@ -7,6 +7,7 @@ namespace spacewar;
 public class Game1 : Game
 {
     IContext currentContext;
+    GameContext gameContext;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -20,8 +21,14 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        currentContext = new MenuContext();
-
+        var menuContext = new MenuContext();
+        currentContext = menuContext;
+        gameContext = new GameContext();
+        menuContext.startGame += (e, args) =>
+        {
+            gameContext.Username = args.Username;
+            currentContext = gameContext;
+        };
 
         base.Initialize();
     }
@@ -30,6 +37,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         currentContext.LoadContent(Content);
+        gameContext.LoadContent(Content);
+
 
         // TODO: use this.Content to load your game content here
     }

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace spacewar;
 
@@ -10,6 +11,7 @@ class MenuContext : IContext
     Button startButton;
     Button scoreboardButton;
     TextInput usernameInput;
+    public event EventHandler<StartGameEventArgs> startGame;
 
     public MenuContext()
     {
@@ -58,6 +60,19 @@ class MenuContext : IContext
             {
                 usernameInput.SetColorMask(Color.Red);
             }
+            else
+            {
+                var eventArgs = new StartGameEventArgs();
+                eventArgs.Username = usernameInput.content;
+                this.startGame?.Invoke(this, eventArgs);
+
+
+            }
         }
     }
+}
+
+public class StartGameEventArgs
+{
+    public string Username { get; set; }
 }
