@@ -1,57 +1,51 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
 
-class TextInput : Context
+class TextInput : IContext
 {
-    public string content = "";
-    string title = "Text";
+    public string Content { get; set; } = "";
+    public string Title { get; set; } = "Text";
+    public Color Colormask { get; set; }
+    public float FontScale { get; set; }
+    public Vector2 Position { get; set; } = new Vector2(0, 0);
 
-    string fontName;
-    SpriteFont spriteFont;
-    Color colormask;
-    float fontScale;
-    Vector2 position = new Vector2(0, 0);
-    bool keydown = false;
-    Keys pressedKey = Keys.None;
+    private bool keydown = false;
+    private Keys pressedKey = Keys.None;
+    private TextInputAssets assets;
 
-    public TextInput(string title, string fontName, Color colormask, float fontScale, GraphicsDeviceManager device) : base(device)
+
+    public TextInput(
+            string title,
+            TextInputAssets assets,
+            Vector2 position,
+            GraphicsDeviceManager device,
+            float fontScale = 1.0f,
+            Color? colormask = null
+            )
     {
-        this.title = title;
-        this.fontName = fontName;
-        this.colormask = colormask;
-        this.fontScale = fontScale;
+        this.Title = title;
+        if (colormask == null) this.Colormask = Color.White;
+        else this.Colormask = (Color)colormask;
+        this.FontScale = fontScale;
+        this.Position = position;
+        this.assets = assets;
     }
 
-    public void SetPosition(float X, float Y)
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        this.position = new Vector2(X, Y);
+        Vector2 textpos = new Vector2(Position.X, Position.Y);
+        string text = Title + " : " + Content + "_";
+        Vector2 textorigin = assets.Font.MeasureString(text) / 2;
+
+        spriteBatch.DrawString(assets.Font, text,
+                textpos, Colormask, 0, textorigin, FontScale, SpriteEffects.None, 0.5f);
     }
 
-    public void SetColorMask(Color colormask)
-    {
-        this.colormask = colormask;
-    }
 
-    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
-    {
-        Vector2 textpos = new Vector2(position.X, position.Y);
-        string text = title + " : " + content + "_";
-        Vector2 textorigin = spriteFont.MeasureString(text) / 2;
-
-        spriteBatch.DrawString(spriteFont, text,
-                textpos, colormask, 0, textorigin, fontScale, SpriteEffects.None, 0.5f);
-    }
-
-    public override void LoadContent(ContentManager content)
-    {
-        spriteFont = content.Load<SpriteFont>(fontName);
-    }
-
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         var keys = Keyboard.GetState().GetPressedKeys();
         if (keys.Length == 0) keydown = false;
@@ -60,14 +54,19 @@ class TextInput : Context
             Keys key = keys[0];
             if ((int)key >= 65 && (int)key <= 90 && (key != pressedKey || !keydown))
             {
-                this.content += (char)key;
+                this.Content += (char)key;
             }
             else if (key == Keys.Back && (key != pressedKey || !keydown))
             {
-                if (this.content.Length > 0) this.content = this.content.Remove(this.content.Length - 1);
+                if (this.Content.Length > 0) this.Content = this.Content.Remove(this.Content.Length - 1);
             }
             keydown = true;
             pressedKey = key;
         }
     }
+}
+
+public class TextInputAssets
+{
+    public SpriteFont Font { get; set; }
 }

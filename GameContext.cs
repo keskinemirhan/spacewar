@@ -1,29 +1,28 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace spacewar;
 
-class GameContext : Context
+class GameContext : IContext
 {
     public string Username { get; set; }
     Spaceship spaceship;
-    public GameContext(GraphicsDeviceManager device) : base(device)
+    public GameContext(GameContextAssets assets, GraphicsDeviceManager device)
     {
-        this.spaceship = new Spaceship(device);
+        this.spaceship = new Spaceship(assets.SpaceshipAssets, device);
     }
-    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        spaceship.Draw(device, spriteBatch, gameTime);
-    }
-
-    public override void LoadContent(ContentManager content)
-    {
-        spaceship.LoadContent(content);
+        spaceship.Draw(spriteBatch, gameTime);
     }
 
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         spaceship.Update(gameTime);
     }
+}
+
+public class GameContextAssets
+{
+    public SpaceshipAssets SpaceshipAssets { get; set; } = new SpaceshipAssets();
 }

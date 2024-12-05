@@ -1,111 +1,89 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
-class Button : Context
+class Button : IContext
 {
-    Texture2D bgTexture;
-    Texture2D bgTextureHover;
-    Texture2D bgTextureClick;
-    Texture2D bgTextureNormal;
+    public float BackgroundScale { get; set; } = 1.0f;
+    public float FontScale { get; set; } = 1.0f;
+    public Vector2 Position { get; set; }
+    public bool IsClicked { get; private set; } = false;
+    public Color Colormask { get; set; }
 
-    string bgTextureNormalStr;
-    string bgTextureHoverStr;
-    string bgTextureClickStr;
+    private ButtonAssets assets;
+    private Texture2D currentTexture;
+    private bool isHovered = false;
+    private bool hasText = false;
+    private string text;
+    private GraphicsDeviceManager device;
 
-    Vector2 position = new Vector2(0, 0);
 
-    bool isHovered = false;
-    public bool isClicked = false;
-
-    bool hasText = false;
-    Color colormask;
-    SpriteFont spriteFont;
-    string text;
-    string fontName;
-
-    float bgScale = 1.0f;
-    float fontScale = 1.0f;
-
-    public Button(string bgTextureNormalStr, string bgTextureHoverStr, string bgTextureClickStr, GraphicsDeviceManager device) : base(device)
+    public Button(ButtonAssets assets, Vector2 position, GraphicsDeviceManager device, Color? colormask = null, string text = null)
     {
-        this.bgTextureNormalStr = bgTextureNormalStr;
-        this.bgTextureHoverStr = bgTextureHoverStr;
-        this.bgTextureClickStr = bgTextureClickStr;
+        this.assets = assets;
+        this.device = device;
+        this.Position = position;
+        if (colormask == null) this.Colormask = Color.White;
+        else this.Colormask = (Color)colormask;
+        if (this.assets.Font != null || text != null)
+        {
+            this.hasText = true;
+            this.text = text;
+        }
+        currentTexture = assets.Normal;
     }
 
-    public void SetFont(string fontName, string text, Color colormask)
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        this.fontName = fontName;
-        this.text = text;
-        this.colormask = colormask;
-        this.hasText = true;
-    }
-
-    public void SetScale(float bgScale, float fontScale)
-    {
-        this.fontScale = fontScale;
-        this.bgScale = bgScale;
-    }
-
-    public void SetPosition(float X, float Y)
-    {
-        position = new Vector2(X, Y);
-    }
-
-    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
-    {
-        bgTexture = isHovered ? isClicked ? bgTextureClick : bgTextureHover : bgTextureNormal;
+        currentTexture = isHovered ? IsClicked ? assets.Pressed : assets.Pressed : assets.Normal;
         spriteBatch.Draw(
-                bgTexture,
-                position,
+                currentTexture,
+                Position,
                 null,
                 Color.White,
                 0f,
-                new Vector2(bgTexture.Width / 2, bgTexture.Height / 2),
-                bgScale,
+                new Vector2(currentTexture.Width / 2, currentTexture.Height / 2),
+                BackgroundScale,
                 SpriteEffects.None,
                 0f);
         if (hasText)
         {
-            Vector2 textpos = new Vector2(position.X,
-                     isClicked ? position.Y + bgScale : position.Y);
-            Vector2 textorigin = spriteFont.MeasureString(text) / 2;
+            Vector2 textpos = new Vector2(Position.X,
+                     IsClicked ? Position.Y + BackgroundScale : Position.Y);
+            Vector2 textorigin = assets.Font.MeasureString(text) / 2;
 
-            spriteBatch.DrawString(spriteFont, text,
-                    textpos, colormask, 0, textorigin, fontScale, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(assets.Font, text,
+                    textpos, Colormask, 0, textorigin, FontScale, SpriteEffects.None, 0.5f);
         }
 
     }
 
-    public override void LoadContent(ContentManager content)
-    {
-        spriteFont = content.Load<SpriteFont>(fontName);
-        bgTextureNormal = content.Load<Texture2D>(bgTextureNormalStr);
-        bgTextureHover = content.Load<Texture2D>(bgTextureHoverStr);
-        bgTextureClick = content.Load<Texture2D>(bgTextureClickStr);
-        bgTexture = bgTextureNormal;
-    }
-
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         var mouseState = Mouse.GetState();
-        var XRight = position.X + bgTexture.Width * bgScale / 2;
-        var XLeft = position.X - bgTexture.Width * bgScale / 2;
-        var YBottom = position.Y + bgTexture.Height * bgScale / 2;
-        var YTop = position.Y - bgTexture.Height * bgScale / 2;
+        var XRight = Position.X + currentTexture.Width * BackgroundScale / 2;
+        var XLeft = Position.X - currentTexture.Width * BackgroundScale / 2;
+        var YBottom = Position.Y + currentTexture.Height * BackgroundScale / 2;
+        var YTop = Position.Y - currentTexture.Height * BackgroundScale / 2;
 
         if (mouseState.X >= XLeft && mouseState.X <= XRight && mouseState.Y <= YBottom && mouseState.Y >= YTop)
         {
             isHovered = true;
-            if (mouseState.LeftButton == ButtonState.Pressed) isClicked = true;
+            if (mouseState.LeftButton == ButtonState.Pressed) IsClicked = true;
         }
         else
         {
             isHovered = false;
-            isClicked = false;
+            IsClicked = false;
         }
     }
+}
+
+public class ButtonAssets
+{
+    public Texture2D Normal { get; set; }
+    public Texture2D Pressed { get; set; }
+    public Texture2D Hover { get; set; }
+    public SpriteFont Font { get; set; }
 }

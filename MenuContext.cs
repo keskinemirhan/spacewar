@@ -1,69 +1,58 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using System;
 
 namespace spacewar;
 
-class MenuContext : Context
+class MenuContext : IContext
 {
 
     Button startButton;
     Button scoreboardButton;
     TextInput usernameInput;
+    private GraphicsDeviceManager device;
     public event EventHandler<StartGameEventArgs> startGame;
 
-    public MenuContext(GraphicsDeviceManager device) : base(device)
+    public MenuContext(MenuContextAssets assets, GraphicsDeviceManager device)
     {
+        this.device = device;
         // initialize start button
-        startButton = new Button("Button", "Button_Hover", "Button_Click", device);
-        startButton.SetFont("Menu", "Start Game", Color.White);
-        startButton.SetScale(2.0f, 1.0f);
-
-        scoreboardButton = new Button("Button", "Button_Hover", "Button_Click", device);
-        scoreboardButton.SetFont("Menu", "Scoreboard", Color.White);
-        scoreboardButton.SetScale(1.5f, 0.5f);
-
-        usernameInput = new TextInput("Player Name", "Menu", Color.White, 1.0f, device);
-
-    }
-
-    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
-    {
         var centerX = device.PreferredBackBufferWidth / 2;
         var centerY = device.PreferredBackBufferHeight / 2;
-        startButton.SetPosition(centerX, centerY);
-        scoreboardButton.SetPosition(centerX, centerY + 70);
-        usernameInput.SetPosition(centerX, centerY - 120);
-        startButton.Draw(device, spriteBatch, gameTime);
-        scoreboardButton.Draw(device, spriteBatch, gameTime);
-        usernameInput.Draw(device, spriteBatch, gameTime);
+        startButton = new Button(assets.StartGameBtn, new Vector2(centerX, centerY), device, Color.White, "Start Game");
+        startButton.BackgroundScale = 2.0f;
 
+        scoreboardButton = new Button(assets.ScoreboardBtn, new Vector2(centerX, centerY + 70), device, Color.White, "Scoreboard");
+        scoreboardButton.BackgroundScale = 1.5f;
+        scoreboardButton.FontScale = 0.5f;
+
+        usernameInput = new TextInput("Player Name", assets.UsernameInput, new Vector2(centerX, centerY - 120), device);
 
     }
 
-    public override void LoadContent(ContentManager content)
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        startButton.LoadContent(content);
-        scoreboardButton.LoadContent(content);
-        usernameInput.LoadContent(content);
+        startButton.Draw(spriteBatch, gameTime);
+        scoreboardButton.Draw(spriteBatch, gameTime);
+        usernameInput.Draw(spriteBatch, gameTime);
     }
 
-    public override void Update(GameTime gameTime)
+
+    public void Update(GameTime gameTime)
     {
         startButton.Update(gameTime);
         scoreboardButton.Update(gameTime);
         usernameInput.Update(gameTime);
-        if (startButton.isClicked)
+        if (startButton.IsClicked)
         {
-            if (usernameInput.content.Length == 0)
+            if (usernameInput.Content.Length == 0)
             {
-                usernameInput.SetColorMask(Color.Red);
+                usernameInput.Colormask = Color.Red;
             }
             else
             {
                 var eventArgs = new StartGameEventArgs();
-                eventArgs.Username = usernameInput.content;
+                eventArgs.Username = usernameInput.Content;
                 this.startGame?.Invoke(this, eventArgs);
 
 
@@ -75,4 +64,11 @@ class MenuContext : Context
 public class StartGameEventArgs
 {
     public string Username { get; set; }
+}
+
+public class MenuContextAssets
+{
+    public ButtonAssets StartGameBtn { get; set; } = new ButtonAssets();
+    public ButtonAssets ScoreboardBtn { get; set; } = new ButtonAssets();
+    public TextInputAssets UsernameInput { get; set; } = new TextInputAssets();
 }

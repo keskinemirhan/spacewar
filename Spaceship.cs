@@ -1,25 +1,32 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace spacewar;
 
-class Spaceship : Context
+class Spaceship : IContext
 {
-    Texture2D fullHealthTexture;
+    Texture2D currentTexture;
+    SpaceshipAssets assets;
     Vector2 position;
+    List<Bullet> bullets;
+    GraphicsDeviceManager device;
 
     public int Health { get; private set; }
     public int Damage { get; private set; }
     float speed = 100.0f;
     float direction = MathHelper.Pi * 2;
 
-    public Spaceship(GraphicsDeviceManager device) : base(device)
+    public Spaceship(SpaceshipAssets assets, GraphicsDeviceManager device)
     {
         position.X = device.PreferredBackBufferWidth / 2;
         position.Y = device.PreferredBackBufferHeight / 2;
+        bullets = new List<Bullet>();
+        this.device = device;
+        currentTexture = assets.Full;
+        this.assets = assets;
     }
 
     public void Move(float rotation, float elapsed)
@@ -30,15 +37,15 @@ class Spaceship : Context
 
     }
 
-    public override void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gameTime)
+    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
         spriteBatch.Draw(
-                fullHealthTexture,
+                currentTexture,
                 position,
                 null,
                 Color.White,
                 direction,
-                new Vector2(fullHealthTexture.Width / 2, fullHealthTexture.Height / 2),
+                new Vector2(currentTexture.Width / 2, currentTexture.Height / 2),
                 Vector2.One,
                 SpriteEffects.None,
                 0f
@@ -46,13 +53,7 @@ class Spaceship : Context
 
     }
 
-    public override void LoadContent(ContentManager content)
-    {
-        fullHealthTexture = content.Load<Texture2D>("MainShipFull");
-
-    }
-
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         var keyboardState = Keyboard.GetState();
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.Left))
@@ -79,4 +80,12 @@ class Spaceship : Context
         }
 
     }
+}
+
+public class SpaceshipAssets
+{
+    public Texture2D Full { get; set; }
+    public Texture2D SlightDamage { get; set; }
+    public Texture2D Damaged { get; set; }
+    public Texture2D VeryDamaged { get; set; }
 }
