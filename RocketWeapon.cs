@@ -53,7 +53,7 @@ class RocketWeapon : IContext
         if (!fired)
         {
             rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 - 20, Rocket.Assets.Rocket.Height / 2), Position, Direction, 100.0f, 100));
-            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 + 20, Rocket.Assets.Rocket.Height / 2),Position, Direction, 100.0f, 100));
+            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 + 20, Rocket.Assets.Rocket.Height / 2), Position, Direction, 100.0f, 100));
             accumulatedSecs = 0f;
             fired = true;
         }
@@ -69,9 +69,23 @@ class RocketWeapon : IContext
                 fired = false;
             }
         }
+        var toBeRemoved = new List<Rocket>();
         foreach (var rocket in rockets)
         {
+            if (rocket.Position.X < -Rocket.Assets.Rocket.Width
+                    || rocket.Position.X > device.PreferredBackBufferWidth + Rocket.Assets.Rocket.Width
+                    || rocket.Position.Y < -Rocket.Assets.Rocket.Height
+                    || rocket.Position.Y > device.PreferredBackBufferWidth + Rocket.Assets.Rocket.Height)
+            {
+                toBeRemoved.Add(rocket);
+
+            }
             rocket.Update(gameTime);
+        }
+
+        foreach (var rocket in toBeRemoved)
+        {
+            rockets.Remove(rocket);
         }
     }
 

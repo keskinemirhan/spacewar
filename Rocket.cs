@@ -14,7 +14,7 @@ class Rocket : IContext
     public int damage;
     public float direction;
     AnimatedTexture animatedTexture;
-    Vector2 position;
+    public Vector2 Position;
 
     public Rocket(
             Vector2 origin,
@@ -27,7 +27,7 @@ class Rocket : IContext
         this.speed = speed;
         this.damage = damage;
         this.direction = direction;
-        this.position = position;
+        this.Position = position;
         this.animatedTexture = new AnimatedTexture(origin,
                 Assets.Rocket, direction, 1.0f, 0.5f, Assets.FrameCount, Assets.Fps);
 
@@ -35,15 +35,15 @@ class Rocket : IContext
 
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        animatedTexture.DrawFrame(spriteBatch, position);
+        animatedTexture.DrawFrame(spriteBatch, Position);
     }
 
     public void Update(GameTime gameTime)
     {
         var elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
         var speedIncrease = speed * elapsed;
-        position.Y -= (float)Math.Sin(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
-        position.X -= (float)Math.Cos(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
+        Position.Y -= (float)Math.Sin(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
+        Position.X -= (float)Math.Cos(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
         this.animatedTexture.UpdateFrame(elapsed);
     }
 
