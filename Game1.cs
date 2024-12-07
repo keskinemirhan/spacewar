@@ -30,27 +30,13 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
+        MenuContext.LoadContent(Content, _graphics);
+        GameContext.LoadContent(Content, _graphics);
         menuAssets = new MenuContextAssets();
         gameAssets = new GameContextAssets();
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // Menu Assets
-        var menuFont = Content.Load<SpriteFont>("Menu");
-        menuAssets.UsernameInput.Font = menuFont;
-        menuAssets.ScoreboardBtn.Font = menuFont;
-        menuAssets.ScoreboardBtn.Normal = Content.Load<Texture2D>("Button");
-        menuAssets.ScoreboardBtn.Pressed = Content.Load<Texture2D>("Button_Click");
-        menuAssets.ScoreboardBtn.Hover = Content.Load<Texture2D>("Button_Hover");
-        menuAssets.StartGameBtn = menuAssets.ScoreboardBtn;
-        menuAssets.UsernameInput.Font = menuFont;
-
-        // Game Assets
-        gameAssets.SpaceshipAssets.Full = Content.Load<Texture2D>("MainShipFull");
-        gameAssets.SpaceshipAssets.Damaged = Content.Load<Texture2D>("MainShipFull");
-        gameAssets.SpaceshipAssets.SlightDamage = Content.Load<Texture2D>("MainShipFull");
-        gameAssets.SpaceshipAssets.VeryDamaged = Content.Load<Texture2D>("MainShipFull");
-
-        var menuContext = new MenuContext(menuAssets, _graphics);
+        var menuContext = new MenuContext();
         currentContext = menuContext;
         gameContext = new GameContext(gameAssets, _graphics);
         menuContext.startGame += (e, args) =>

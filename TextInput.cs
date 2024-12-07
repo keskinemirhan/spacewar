@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
 
-class TextInput : IContext
+class TextInput : IGameObject
 {
     public string Content { get; set; } = "";
     public string Title { get; set; } = "Text";
@@ -19,9 +19,8 @@ class TextInput : IContext
 
     public TextInput(
             string title,
-            TextInputAssets assets,
             Vector2 position,
-            GraphicsDeviceManager device,
+            TextInputAssets assets,
             float fontScale = 1.0f,
             Color? colormask = null
             )
@@ -30,8 +29,8 @@ class TextInput : IContext
         if (colormask == null) this.Colormask = Color.White;
         else this.Colormask = (Color)colormask;
         this.FontScale = fontScale;
-        this.Position = position;
         this.assets = assets;
+        this.Position = position;
     }
 
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

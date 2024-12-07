@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -9,24 +10,26 @@ class MenuContext : IContext
 
     Button startButton;
     Button scoreboardButton;
+    private static ButtonAssets startButtonAssets;
+    private static ButtonAssets scoreboardButtonAssets;
+    private static TextInputAssets usernameInputAssets;
+    private static GraphicsDeviceManager device;
     TextInput usernameInput;
-    private GraphicsDeviceManager device;
     public event EventHandler<StartGameEventArgs> startGame;
 
-    public MenuContext(MenuContextAssets assets, GraphicsDeviceManager device)
+    public MenuContext()
     {
-        this.device = device;
         // initialize start button
         var centerX = device.PreferredBackBufferWidth / 2;
         var centerY = device.PreferredBackBufferHeight / 2;
-        startButton = new Button(assets.StartGameBtn, new Vector2(centerX, centerY), device, Color.White, "Start Game");
+        startButton = new Button(scoreboardButtonAssets, new Vector2(centerX, centerY), device, Color.White, "Start Game");
         startButton.BackgroundScale = 2.0f;
 
-        scoreboardButton = new Button(assets.ScoreboardBtn, new Vector2(centerX, centerY + 70), device, Color.White, "Scoreboard");
+        scoreboardButton = new Button(scoreboardButtonAssets, new Vector2(centerX, centerY + 70), device, Color.White, "Scoreboard");
         scoreboardButton.BackgroundScale = 1.5f;
         scoreboardButton.FontScale = 0.5f;
 
-        usernameInput = new TextInput("Player Name", assets.UsernameInput, new Vector2(centerX, centerY - 120), device);
+        usernameInput = new TextInput("Player Name", new Vector2(centerX, centerY - 120), usernameInputAssets);
 
     }
 
@@ -58,6 +61,20 @@ class MenuContext : IContext
 
             }
         }
+    }
+
+    public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
+    {
+        MenuContext.device = device;
+        startButtonAssets = new ButtonAssets();
+        startButtonAssets.Font = content.Load<SpriteFont>("Menu");
+        startButtonAssets.Normal = content.Load<Texture2D>("Button");
+        startButtonAssets.Pressed = content.Load<Texture2D>("Button_Click");
+        startButtonAssets.Hover = content.Load<Texture2D>("Button_Hover");
+
+        usernameInputAssets = new TextInputAssets();
+        usernameInputAssets.Font = content.Load<SpriteFont>("Menu");
+        scoreboardButtonAssets = startButtonAssets;
     }
 }
 

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace spacewar;
-class Button : IContext
+class Button : IGameObject
 {
     public float BackgroundScale { get; set; } = 1.0f;
     public float FontScale { get; set; } = 1.0f;
