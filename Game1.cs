@@ -30,13 +30,11 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
         MenuContext.LoadContent(Content, _graphics);
         GameContext.LoadContent(Content, _graphics);
-        menuAssets = new MenuContextAssets();
-        gameAssets = new GameContextAssets();
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         var menuContext = new MenuContext();
+
         currentContext = menuContext;
         gameContext = new GameContext(gameAssets, _graphics);
         menuContext.startGame += (e, args) =>

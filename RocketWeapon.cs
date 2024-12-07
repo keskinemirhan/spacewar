@@ -52,8 +52,8 @@ class RocketWeapon : IContext
     {
         if (!fired)
         {
-            rockets.Add(new Rocket(new Vector2(Position.X, Position.Y), Direction, 100.0f, 100));
-            rockets.Add(new Rocket(new Vector2(Position.X, Position.Y), Direction, 100.0f, 100));
+            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 - 20, Rocket.Assets.Rocket.Height / 2), Position, Direction, 100.0f, 100));
+            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 + 20, Rocket.Assets.Rocket.Height / 2),Position, Direction, 100.0f, 100));
             accumulatedSecs = 0f;
             fired = true;
         }

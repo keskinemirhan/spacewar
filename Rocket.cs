@@ -7,7 +7,7 @@ namespace spacewar;
 
 class Rocket : IContext
 {
-    private static RocketAssets assets;
+    public static RocketAssets Assets;
 
     public float speed;
     private static GraphicsDeviceManager device;
@@ -17,6 +17,7 @@ class Rocket : IContext
     Vector2 position;
 
     public Rocket(
+            Vector2 origin,
             Vector2 position,
             float direction,
             float speed,
@@ -27,8 +28,8 @@ class Rocket : IContext
         this.damage = damage;
         this.direction = direction;
         this.position = position;
-        this.animatedTexture = new AnimatedTexture(new Vector2(assets.Rocket.Width / 2, assets.Rocket.Height / 2),
-                assets.Rocket, direction, 1.0f, 0.5f, assets.FrameCount, assets.Fps);
+        this.animatedTexture = new AnimatedTexture(origin,
+                Assets.Rocket, direction, 1.0f, 0.5f, Assets.FrameCount, Assets.Fps);
 
     }
 
@@ -48,11 +49,11 @@ class Rocket : IContext
 
     public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
-        assets = new RocketAssets();
+        Assets = new RocketAssets();
         Rocket.device = device;
-        assets.Rocket = content.Load<Texture2D>("ProjectileRocket");
-        assets.FrameCount = 3;
-        assets.Fps = 3;
+        Assets.Rocket = content.Load<Texture2D>("ProjectileRocket");
+        Assets.FrameCount = 3;
+        Assets.Fps = 3;
     }
 }
 
