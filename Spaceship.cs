@@ -27,7 +27,7 @@ class Spaceship : IContext
         position.Y = device.PreferredBackBufferHeight / 2;
         bullets = new List<Rocket>();
         currentTexture = assets.Full;
-        this.rocketWeapon = new RocketWeapon(direction, position);
+        this.rocketWeapon = new RocketWeapon(position, direction);
     }
     public void Shoot(GameTime gameTime)
     {

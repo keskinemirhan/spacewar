@@ -1,108 +1,125 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace spacewar;
 
-class RocketWeapon : IContext
+class RocketWeapon : Weapon
 {
-    List<Rocket> rockets;
-    public Vector2 Position { get; set; }
-    public float Direction { get; set; }
-    private static GraphicsDeviceManager device;
-    private static RocketWeaponAssets assets;
-    private float accumulatedSecs = 0f;
-    private bool fired = false;
+    private GameTimer attackTimer = new GameTimer();
+    private bool fired1 = false;
+    private bool fired2 = false;
+    private bool fired3 = false;
+    private bool fired4 = false;
+    private bool fired5 = false;
+    private bool fired6 = false;
 
-    public RocketWeapon(float direction, Vector2 position)
+    public new static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
-        this.rockets = new List<Rocket>();
-        this.Position = position;
-        this.Direction = direction;
+        Rocket.LoadContent(content, device);
+        RocketWeapon.device = device;
+        RocketWeapon.assets = new WeaponAssets();
+        RocketWeapon.assets.Weapon = content.Load<Texture2D>("RocketWeapon");
+        RocketWeapon.assets.FrameCount = 17;
+        RocketWeapon.assets.Fps = 9;
     }
 
-    public RocketWeapon(RocketWeaponAssets assets, GraphicsDeviceManager device)
-    {
-    }
-
-    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-    {
-        foreach (var rocket in rockets)
-        {
-            rocket.Draw(spriteBatch, gameTime);
-        }
-        foreach (var rocket in rockets)
-        {
-            rocket.Draw(spriteBatch, gameTime);
-        }
-        spriteBatch.Draw(
-                assets.Weapon,
-                Position,
-                null,
-                Color.White,
-                Direction,
-                new Vector2(assets.Weapon.Width / 2, assets.Weapon.Height / 2),
-                1.0f,
-                SpriteEffects.None,
-                0f);
-    }
-
-    public void Shoot(GameTime gameTime)
+    public override void Shoot(GameTime gameTime)
     {
         if (!fired)
         {
-            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 - 20, Rocket.Assets.Rocket.Height / 2), Position, Direction, 100.0f, 100));
-            rockets.Add(new Rocket(new Vector2(Rocket.Assets.Rocket.Width / 2 + 20, Rocket.Assets.Rocket.Height / 2), Position, Direction, 100.0f, 100));
-            accumulatedSecs = 0f;
+            attackTimer.Clear();
             fired = true;
+            fired1 = false;
+            fired2 = false;
+            fired3 = false;
+            fired4 = false;
+            fired5 = false;
+            fired6 = false;
         }
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+
+        base.Update(gameTime);
+
         if (fired)
         {
-            accumulatedSecs += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (accumulatedSecs >= 1.0f)
+            attackTimer.StartTimer(gameTime);
+            if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 13 && !fired6)
             {
-                fired = false;
+                fired6 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 - 30, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
             }
-        }
-        var toBeRemoved = new List<Rocket>();
-        foreach (var rocket in rockets)
-        {
-            if (rocket.Position.X < -Rocket.Assets.Rocket.Width
-                    || rocket.Position.X > device.PreferredBackBufferWidth + Rocket.Assets.Rocket.Width
-                    || rocket.Position.Y < -Rocket.Assets.Rocket.Height
-                    || rocket.Position.Y > device.PreferredBackBufferWidth + Rocket.Assets.Rocket.Height)
+            else if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 11 && !fired5)
             {
-                toBeRemoved.Add(rocket);
-
+                fired5 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 + 30, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
             }
-            rocket.Update(gameTime);
-        }
-
-        foreach (var rocket in toBeRemoved)
-        {
-            rockets.Remove(rocket);
+            else if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 9 && !fired4)
+            {
+                fired4 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 - 25, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
+            }
+            else if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 7 && !fired3)
+            {
+                fired3 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 + 25, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
+            }
+            else if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 5 && !fired2)
+            {
+                fired2 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 - 20, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
+            }
+            else if (attackTimer.Elapsed * (float)RocketWeapon.assets.Fps >= 3 && !fired1)
+            {
+                fired1 = true;
+                this.bullets.Add(new Rocket(
+                            new Vector2(Rocket.Assets.Bullet.Width / 2 + 20, Rocket.Assets.Bullet.Height / 2),
+                            Position,
+                            100f,
+                            Direction,
+                            150f,
+                            100));
+            }
         }
     }
 
-    public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
+    public RocketWeapon(Vector2 position, float direction, float scale = 1, float bulletScale = 1)
+        : base(new Vector2(RocketWeapon.assets.Weapon.Width / 2, RocketWeapon.assets.Weapon.Height / 2),
+                position, direction, scale, bulletScale, 2, Rocket.Assets)
     {
-        RocketWeapon.device = device;
-        Rocket.LoadContent(content, device);
-        assets = new RocketWeaponAssets();
-        assets.Weapon = content.Load<Texture2D>("RocketWeapon");
-        assets.FrameCount = 17;
-        assets.Fps = 5;
-    }
-}
 
-public class RocketWeaponAssets
-{
-    public Texture2D Weapon { get; set; }
-    public int FrameCount { get; set; }
-    public int Fps { get; set; }
+    }
 }
