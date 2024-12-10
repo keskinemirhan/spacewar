@@ -7,28 +7,27 @@ namespace spacewar;
 class GameContext : IContext
 {
     public string Username { get; set; }
-    Spaceship spaceship;
-    public GameContext(GameContextAssets assets, GraphicsDeviceManager device)
+    PlayerSpaceship playerSpaceship;
+    public GameContext(GraphicsDeviceManager device)
     {
-        this.spaceship = new Spaceship();
+        this.playerSpaceship = new PlayerSpaceship(
+                new Vector2(device.PreferredBackBufferWidth / 2, device.PreferredBackBufferHeight / 2),
+                MathHelper.Pi * 2,
+                1);
     }
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        spaceship.Draw(spriteBatch, gameTime);
+        playerSpaceship.Draw(spriteBatch, gameTime);
     }
 
     public void Update(GameTime gameTime)
     {
-        spaceship.Update(gameTime);
+        playerSpaceship.Update(gameTime);
     }
 
     public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
-        Spaceship.LoadContent(content, device);
+        PlayerSpaceship.LoadContent(content, device);
     }
 }
 
-public class GameContextAssets
-{
-    public SpaceshipAssets SpaceshipAssets { get; set; } = new SpaceshipAssets();
-}

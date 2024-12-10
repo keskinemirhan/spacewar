@@ -1,127 +1,94 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
 
 namespace spacewar;
 
-class Spaceship : IContext
+abstract class Spaceship : IContext
 {
-    Texture2D currentTexture;
-    Vector2 position;
-    List<Rocket> bullets;
-    RocketWeapon rocketWeapon;
-    private static SpaceshipAssets assets;
-    private static GraphicsDeviceManager device;
-
     public int Health { get; private set; }
     public int Damage { get; private set; }
-    float speed = 100.0f;
-    float direction = MathHelper.Pi * 2;
+    public static SpaceshipAssets Assets { get; protected set; }
 
-    public Spaceship()
+    protected Texture2D currentTexture;
+    protected Vector2 position;
+    protected Weapon weapon;
+    protected static GraphicsDeviceManager device;
+    protected float speed;
+    protected float maxSpeed;
+    protected float acceleration;
+    protected float deceleration;
+    protected float direction;
+    protected float scale;
+    protected Vector2 origin;
+
+
+    protected Spaceship(Vector2 origin, Vector2 position,
+            float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, Weapon weapon)
     {
-        position.X = device.PreferredBackBufferWidth / 2;
-        position.Y = device.PreferredBackBufferHeight / 2;
-        bullets = new List<Rocket>();
-        currentTexture = assets.Full;
-        this.rocketWeapon = new RocketWeapon(position, direction);
+        this.origin = origin;
+        this.position = position;
+        this.direction = direction;
+        this.speed = speed;
+        this.maxSpeed = maxSpeed;
+        this.scale = scale;
+        this.acceleration = acceleration;
+        this.deceleration = deceleration;
+        this.weapon = weapon;
+        currentTexture = Assets.Full;
     }
     public void Shoot(GameTime gameTime)
     {
-        this.rocketWeapon.Shoot(gameTime);
+        this.weapon.Shoot(gameTime);
     }
 
-    public void Move(float rotation, float elapsed)
+    public void Move(float direction, float elapsed)
     {
+        speed += elapsed * acceleration - elapsed * deceleration;
+        if (speed < 0) speed = 0;
+        else if (speed >= maxSpeed) speed = maxSpeed;
         var speedIncrease = elapsed * speed;
         position.Y -= (float)Math.Sin(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
         position.X -= (float)Math.Cos(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
-
     }
 
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        rocketWeapon.Position = position;
-        rocketWeapon.Direction = direction;
-        rocketWeapon.Draw(spriteBatch, gameTime);
-        foreach (var bullet in bullets)
-        {
-            bullet.Draw(spriteBatch, gameTime);
-        }
+        weapon.Position = position;
+        weapon.Direction = direction;
+        weapon.Draw(spriteBatch, gameTime);
+
         spriteBatch.Draw(
                 currentTexture,
                 position,
                 null,
                 Color.White,
                 direction,
-                new Vector2(currentTexture.Width / 2, currentTexture.Height / 2),
-                Vector2.One,
+                origin,
+                scale,
                 SpriteEffects.None,
                 0f
                 );
 
     }
 
-    public void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime)
     {
-        foreach (var bullet in bullets)
-        {
-            bullet.Update(gameTime);
-
-        }
-        var keyboardState = Keyboard.GetState();
-        if (keyboardState.IsKeyDown(Keys.Up) ||
-                keyboardState.IsKeyDown(Keys.Right) ||
-                keyboardState.IsKeyDown(Keys.Left) ||
-                keyboardState.IsKeyDown(Keys.E))
-        {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            var speedIncrease = speed * elapsed;
-            if (keyboardState.IsKeyDown(Keys.Up))
-            {
-                this.Move(direction, elapsed);
-            }
-            if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                direction -= elapsed;
-                float circle = MathHelper.Pi * 2;
-                direction %= circle;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                direction += elapsed;
-                float circle = MathHelper.Pi * 2;
-                direction %= circle;
-            }
-            if (keyboardState.IsKeyDown(Keys.E))
-            {
-                this.Shoot(gameTime);
-            }
-        }
-        rocketWeapon.Update(gameTime);
-
+        weapon.Update(gameTime);
+        this.Move(direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
     }
 
     public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
-        Spaceship.device = device;
-        RocketWeapon.LoadContent(content, device);
-        assets = new SpaceshipAssets();
-        assets.Full = content.Load<Texture2D>("MainShipFull");
-        assets.Damaged = content.Load<Texture2D>("MainShipFull");
-        assets.SlightDamage = content.Load<Texture2D>("MainShipFull");
-        assets.VeryDamaged = content.Load<Texture2D>("MainShipFull");
+        throw new System.NotImplementedException();
     }
 }
 
 public class SpaceshipAssets
 {
-    public Texture2D Full { get; set; }
-    public Texture2D SlightDamage { get; set; }
-    public Texture2D Damaged { get; set; }
-    public Texture2D VeryDamaged { get; set; }
+    public Texture2D Full;
+    public Texture2D SlightDamage;
+    public Texture2D Damaged;
+    public Texture2D VeryDamaged;
 }

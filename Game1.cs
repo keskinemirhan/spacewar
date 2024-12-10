@@ -8,8 +8,6 @@ public class Game1 : Game
 {
     IContext currentContext;
     GameContext gameContext;
-    MenuContextAssets menuAssets;
-    GameContextAssets gameAssets;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -36,7 +34,7 @@ public class Game1 : Game
         var menuContext = new MenuContext();
 
         currentContext = menuContext;
-        gameContext = new GameContext(gameAssets, _graphics);
+        gameContext = new GameContext(_graphics);
         menuContext.startGame += (e, args) =>
         {
             gameContext.Username = args.Username;
