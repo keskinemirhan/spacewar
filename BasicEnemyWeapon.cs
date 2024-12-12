@@ -6,8 +6,8 @@ namespace spacewar;
 class BasicEnemyWeapon : Weapon
 {
     public static WeaponAssets StaticAssets { get; private set; }
-    public BasicEnemyWeapon(Vector2 position, float direction, float scale, float bulletScale)
-        : base(new Vector2(StaticAssets.Weapon.Width / 2, StaticAssets.Weapon.Height / 2), position, direction, scale, bulletScale, 4, StaticAssets, EnemyBullet.StaticAssets)
+    public BasicEnemyWeapon(Vector2 position, float direction, float scale)
+        : base(new Vector2(StaticAssets.Weapon.Width / 2, StaticAssets.Weapon.Height / 2), position, scale, direction, 4, StaticAssets, EnemyBullet.StaticAssets)
     {
     }
 
@@ -19,7 +19,7 @@ class BasicEnemyWeapon : Weapon
             this.bullets.Add(new EnemyBullet(
                         new Vector2(EnemyBullet.StaticAssets.Bullet.Width / 2, EnemyBullet.StaticAssets.Bullet.Height / 2),
                         Position,
-                        0f,
+                        scale,
                         Direction,
                         100f,
                         20

@@ -6,8 +6,8 @@ namespace spacewar;
 class EnemyBullet : Bullet
 {
     public static BulletAssets StaticAssets { get; private set; }
-    public EnemyBullet(Vector2 origin, Vector2 position, float acceleration, float direction, float speed, int damage, float scale = 1)
-         : base(origin, position, acceleration, direction, speed, damage, StaticAssets, scale)
+    public EnemyBullet(Vector2 origin, Vector2 position, float scale, float direction, float speed, int damage)
+         : base(origin, position, scale, direction, speed, speed, 0, 0, damage, new Rectangle(), StaticAssets)
     {
     }
 

@@ -31,7 +31,7 @@ class GameContext : IContext
     public void Update(GameTime gameTime)
     {
         playerSpaceship.Update(gameTime);
-        basicEnemyShip.PlayerPosition = playerSpaceship.position;
+        basicEnemyShip.PlayerPosition = playerSpaceship.Position;
         basicEnemyShip.Update(gameTime);
     }
 

@@ -1,44 +1,37 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
 
 namespace spacewar;
 
-abstract class Weapon : IContext
+abstract class Weapon : GameObject
 {
-    public Vector2 Position;
-    public float Direction;
-    public float Scale;
-    public float BulletScale;
     public float FireRateSecs;
     public WeaponAssets Assets { get; private set; }
-
     protected List<Bullet> bullets;
-    protected static GraphicsDeviceManager device;
     public bool fired = false;
     protected AnimatedTexture animatedTexture;
     protected BulletAssets bulletAssets;
 
     private GameTimer fireTimer = new GameTimer();
 
-    protected Weapon(Vector2 origin, Vector2 position, float direction, float scale, float bulletScale, float fireRateSecs, WeaponAssets assets, BulletAssets bulletAssets)
+    protected Weapon(Vector2 origin, Vector2 position, float scale, float direction, float fireRateSecs, WeaponAssets assets, BulletAssets bulletAssets)
+        : base(origin, position, scale, direction, 0, 0, 0, 0, new Rectangle())
     {
         this.bullets = new List<Bullet>();
         this.bulletAssets = bulletAssets ?? throw new ArgumentNullException(nameof(bulletAssets));
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.Direction = direction;
-        this.Scale = scale;
+        this.scale = scale;
         this.Position = position;
         this.Direction = direction;
-        this.BulletScale = bulletScale;
         this.FireRateSecs = fireRateSecs;
         this.bulletAssets = bulletAssets;
         this.animatedTexture = new AnimatedTexture(origin, Assets.Weapon, Direction, scale, 0.5f, Assets.FrameCount, Assets.Fps, false);
     }
 
-    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+    public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
         foreach (var bullet in bullets)
         {
@@ -49,7 +42,7 @@ abstract class Weapon : IContext
 
     public abstract void Shoot(GameTime gameTime);
 
-    public virtual void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         animatedTexture.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
         if (fired)
@@ -83,11 +76,6 @@ abstract class Weapon : IContext
             bullets.Remove(bullet);
         }
         animatedTexture.Rotation = Direction;
-    }
-
-    public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
-    {
-        throw new System.NotImplementedException();
     }
 }
 

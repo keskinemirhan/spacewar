@@ -8,7 +8,7 @@ abstract class EnemyShip : Spaceship
 
     protected EnemyShip(Vector2 origin, Vector2 spawn,
             float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, Weapon weapon, SpaceshipAssets assets)
-         : base(origin, spawn, scale, direction, speed, maxSpeed, acceleration, deceleration, weapon, assets)
+         : base(origin, spawn, scale, direction, speed, maxSpeed, acceleration, deceleration, new Rectangle(), weapon, assets)
     {
     }
 

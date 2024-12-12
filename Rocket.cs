@@ -10,12 +10,12 @@ class Rocket : Bullet
     public Rocket(
             Vector2 origin,
             Vector2 position,
+            float scale,
             float acceleration,
             float direction,
             float speed,
-            int damage,
-            float scale = 1.0f
-            ) : base(origin, position, acceleration, direction, speed, damage, StaticAssets, scale)
+            int damage
+            ) : base(origin, position, scale, direction, speed, 600, acceleration, 0, damage, new Rectangle(), StaticAssets)
     {
     }
 
