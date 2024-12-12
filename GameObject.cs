@@ -1,23 +1,22 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace spacewar;
 
-abstract class GameObject : IContext
+public abstract class GameObject : IContext
 {
-    public Rectangle CollisionRect;
+    public float CollisionRange;
     public float Speed;
     public float MaxSpeed;
     public float Acceleration;
     public float Deceleration;
     public float Direction;
     public Vector2 Position;
+    public float Scale;
+    public Vector2 Origin;
 
     protected static GraphicsDeviceManager device;
-    protected Vector2 origin;
-    protected float scale;
 
     protected GameObject(Vector2 origin,
                          Vector2 position,
@@ -27,11 +26,11 @@ abstract class GameObject : IContext
                          float maxSpeed,
                          float acceleration,
                          float deceleration,
-                         Rectangle collisionRect
+                         float collisionRange
                          )
     {
-        this.origin = origin;
-        this.scale = scale;
+        this.Origin = origin;
+        this.Scale = scale;
         this.Position = position;
         this.Direction = direction;
         this.Speed = speed;
@@ -39,12 +38,13 @@ abstract class GameObject : IContext
         this.Acceleration = acceleration;
         this.Deceleration = deceleration;
         this.Deceleration = deceleration;
-        this.CollisionRect = collisionRect;
+        this.CollisionRange = collisionRange * scale;
     }
 
     public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
 
     public abstract void Update(GameTime gameTime);
+
 
     public static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {

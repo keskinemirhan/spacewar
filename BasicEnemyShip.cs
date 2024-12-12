@@ -8,7 +8,7 @@ class BasicEnemyShip : EnemyShip
     public static SpaceshipAssets StaticAssets;
     public BasicEnemyShip(Vector2 spawn, float scale, float direction)
         : base(new Vector2(StaticAssets.Full.Width / 2, StaticAssets.Full.Height / 2),
-                 spawn, scale, direction, 100, 100, 0, 0, new BasicEnemyWeapon(spawn, direction, scale), StaticAssets)
+                 spawn, scale, direction, 100, 100, 0, 32, new BasicEnemyWeapon(spawn, direction, scale), StaticAssets)
     {
     }
 
@@ -19,8 +19,8 @@ class BasicEnemyShip : EnemyShip
 
     public override void Move(float direction, float elapsed)
     {
-        if (Position.X + origin.X >= device.PreferredBackBufferWidth) Speed = -Speed;
-        else if (Position.X - origin.X <= 0) Speed = -Speed;
+        if (Position.X + Origin.X >= device.PreferredBackBufferWidth) Speed = -Speed;
+        else if (Position.X - Origin.X <= 0) Speed = -Speed;
         Position.X += Speed * elapsed;
         this.Direction = (PlayerPosition.Y >= Position.Y ? MathHelper.Pi : 0) - (float)System.Math.Atan((double)((PlayerPosition.X - Position.X) / (PlayerPosition.Y - Position.Y)));
     }

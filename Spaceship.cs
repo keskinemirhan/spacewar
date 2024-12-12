@@ -14,8 +14,8 @@ abstract class Spaceship : GameObject
     protected Weapon weapon;
 
     protected Spaceship(Vector2 origin, Vector2 position, float scale,
-            float direction, float speed, float maxSpeed, float acceleration, float deceleration, Rectangle collisionRect, Weapon weapon, SpaceshipAssets assets)
-        : base(origin, position, scale, direction, speed, maxSpeed, acceleration, deceleration, collisionRect)
+            float direction, float speed, float maxSpeed, float acceleration, float deceleration, float collisionRange, Weapon weapon, SpaceshipAssets assets)
+        : base(origin, position, scale, direction, speed, maxSpeed, acceleration, deceleration, collisionRange)
     {
         this.weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
@@ -56,8 +56,8 @@ abstract class Spaceship : GameObject
                 null,
                 Color.White,
                 Direction,
-                origin,
-                scale,
+                Origin,
+                Scale,
                 SpriteEffects.None,
                 0f
                 );

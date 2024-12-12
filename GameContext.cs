@@ -13,11 +13,11 @@ class GameContext : IContext
     {
         this.playerSpaceship = new PlayerSpaceship(
                 new Vector2(device.PreferredBackBufferWidth / 2, device.PreferredBackBufferHeight / 2),
-                MathHelper.Pi * 2,
-                1);
+                0,
+                2);
         this.basicEnemyShip = new BasicEnemyShip(
                 new Vector2(device.PreferredBackBufferWidth / 4, device.PreferredBackBufferHeight / 2),
-                1,
+                2,
                 MathHelper.Pi
                 );
 
@@ -33,6 +33,7 @@ class GameContext : IContext
         playerSpaceship.Update(gameTime);
         basicEnemyShip.PlayerPosition = playerSpaceship.Position;
         basicEnemyShip.Update(gameTime);
+        if (CollisionDetector.CheckCollision(playerSpaceship, basicEnemyShip)) System.Console.WriteLine("Collision" + System.DateTime.Now);
     }
 
     public static void LoadContent(ContentManager content, GraphicsDeviceManager device)

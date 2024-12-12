@@ -17,13 +17,13 @@ abstract class Weapon : GameObject
     private GameTimer fireTimer = new GameTimer();
 
     protected Weapon(Vector2 origin, Vector2 position, float scale, float direction, float fireRateSecs, WeaponAssets assets, BulletAssets bulletAssets)
-        : base(origin, position, scale, direction, 0, 0, 0, 0, new Rectangle())
+        : base(origin, position, scale, direction, 0, 0, 0, 0, 0)
     {
         this.bullets = new List<Bullet>();
         this.bulletAssets = bulletAssets ?? throw new ArgumentNullException(nameof(bulletAssets));
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.Direction = direction;
-        this.scale = scale;
+        this.Scale = scale;
         this.Position = position;
         this.Direction = direction;
         this.FireRateSecs = fireRateSecs;

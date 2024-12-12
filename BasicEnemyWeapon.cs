@@ -19,7 +19,7 @@ class BasicEnemyWeapon : Weapon
             this.bullets.Add(new EnemyBullet(
                         new Vector2(EnemyBullet.StaticAssets.Bullet.Width / 2, EnemyBullet.StaticAssets.Bullet.Height / 2),
                         Position,
-                        scale,
+                        Scale,
                         Direction,
                         100f,
                         20

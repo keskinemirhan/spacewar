@@ -54,7 +54,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 30, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,
@@ -66,7 +66,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 30, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,
@@ -78,7 +78,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 25, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,
@@ -90,7 +90,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 25, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,
@@ -102,7 +102,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 20, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,
@@ -114,7 +114,7 @@ class RocketWeapon : Weapon
                 this.bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 20, Rocket.StaticAssets.Bullet.Height / 2),
                             Position,
-                            scale,
+                            Scale,
                             100f,
                             Direction,
                             150f,

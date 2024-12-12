@@ -10,8 +10,7 @@ class PlayerSpaceship : Spaceship
     public static SpaceshipAssets StaticAssets { get; private set; }
     public PlayerSpaceship(Vector2 startingPosition, float startingDirection, float scale)
         : base(new Vector2(PlayerSpaceship.StaticAssets.Full.Width / 2, PlayerSpaceship.StaticAssets.Full.Height / 2),
-                startingPosition, scale, startingDirection, 0, 200, 0, 10,
-               new Rectangle(), new RocketWeapon(startingPosition, startingDirection, scale), PlayerSpaceship.StaticAssets)
+                startingPosition, scale, startingDirection, 0, 200, 0, 10, 24, new RocketWeapon(startingPosition, startingDirection, scale), PlayerSpaceship.StaticAssets)
     {
     }
 

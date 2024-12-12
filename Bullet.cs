@@ -10,8 +10,8 @@ abstract class Bullet : GameObject
     public int Damage;
     protected AnimatedTexture animatedTexture;
 
-    protected Bullet(Vector2 origin, Vector2 position, float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, int damage, Rectangle collisionRect, BulletAssets assets)
-        : base(origin, position, scale, direction, speed, maxSpeed, acceleration, deceleration, collisionRect)
+    protected Bullet(Vector2 origin, Vector2 position, float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, int damage, float collisionRange, BulletAssets assets)
+        : base(origin, position, scale, direction, speed, maxSpeed, acceleration, deceleration, collisionRange)
     {
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.animatedTexture = new AnimatedTexture(origin,
