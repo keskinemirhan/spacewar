@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace spacewar;
 
@@ -50,10 +51,13 @@ class RocketWeapon : Weapon
             attackTimer.StartTimer(gameTime);
             if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 13 && !fired6)
             {
+                var pos = new Vector2((float)(Math.Cos(Direction) * +30),
+                        (float)(+30 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired6 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 30, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
@@ -62,10 +66,13 @@ class RocketWeapon : Weapon
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 11 && !fired5)
             {
+                var pos = new Vector2((float)(Math.Cos(Direction) * -30),
+                        (float)(-30 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired5 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 30, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
@@ -74,10 +81,13 @@ class RocketWeapon : Weapon
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 9 && !fired4)
             {
+                var pos = new Vector2((float)(Math.Cos(Direction) * +25),
+                        (float)(+25 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired4 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 25, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
@@ -86,10 +96,13 @@ class RocketWeapon : Weapon
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 7 && !fired3)
             {
+                var pos = new Vector2((float)(Math.Cos(Direction) * -25),
+                        (float)(-25 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired3 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 25, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
@@ -98,10 +111,14 @@ class RocketWeapon : Weapon
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 5 && !fired2)
             {
+
+                var pos = new Vector2((float)(Math.Cos(Direction) * +20),
+                        (float)(+20 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired2 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 - 20, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
@@ -110,10 +127,13 @@ class RocketWeapon : Weapon
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 3 && !fired1)
             {
+                var pos = new Vector2((float)(Math.Cos(Direction) * -20),
+                        (float)(-20 * Math.Sin(Direction)));
+                pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired1 = true;
                 this.bullets.Add(new Rocket(
-                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2 + 20, Rocket.StaticAssets.Bullet.Height / 2),
-                            Position,
+                            new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
+                            pos,
                             Scale,
                             100f,
                             Direction,
