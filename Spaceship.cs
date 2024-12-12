@@ -9,23 +9,23 @@ abstract class Spaceship : IContext
 {
     public int Health { get; private set; }
     public int Damage { get; private set; }
-    public static SpaceshipAssets Assets { get; protected set; }
+    public SpaceshipAssets Assets { get; private set; }
 
     protected Texture2D currentTexture;
-    protected Vector2 position;
+    public Vector2 position;
     protected Weapon weapon;
     protected static GraphicsDeviceManager device;
     protected float speed;
     protected float maxSpeed;
     protected float acceleration;
     protected float deceleration;
-    protected float direction;
+    public float direction;
     protected float scale;
     protected Vector2 origin;
 
 
     protected Spaceship(Vector2 origin, Vector2 position,
-            float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, Weapon weapon)
+            float scale, float direction, float speed, float maxSpeed, float acceleration, float deceleration, Weapon weapon, SpaceshipAssets assets)
     {
         this.origin = origin;
         this.position = position;
@@ -35,15 +35,24 @@ abstract class Spaceship : IContext
         this.scale = scale;
         this.acceleration = acceleration;
         this.deceleration = deceleration;
-        this.weapon = weapon;
+        this.weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
+        this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         currentTexture = Assets.Full;
     }
+
     public void Shoot(GameTime gameTime)
     {
         this.weapon.Shoot(gameTime);
     }
 
-    public void Move(float direction, float elapsed)
+    public int TakeDamage(int amount)
+    {
+        this.Health -= amount;
+        if (this.Health < 0) this.Health = 0;
+        return this.Health;
+    }
+
+    public virtual void Move(float direction, float elapsed)
     {
         speed += elapsed * acceleration - elapsed * deceleration;
         if (speed < 0) speed = 0;
@@ -53,7 +62,7 @@ abstract class Spaceship : IContext
         position.X -= (float)Math.Cos(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
     }
 
-    public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+    public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
         weapon.Position = position;
         weapon.Direction = direction;

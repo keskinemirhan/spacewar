@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System;
 
 namespace spacewar;
 
@@ -12,20 +13,21 @@ abstract class Weapon : IContext
     public float Scale;
     public float BulletScale;
     public float FireRateSecs;
+    public WeaponAssets Assets { get; private set; }
 
     protected List<Bullet> bullets;
     protected static GraphicsDeviceManager device;
-    protected static WeaponAssets assets;
-    protected bool fired = false;
+    public bool fired = false;
     protected AnimatedTexture animatedTexture;
     protected BulletAssets bulletAssets;
 
     private GameTimer fireTimer = new GameTimer();
 
-    protected Weapon(Vector2 origin, Vector2 position, float direction, float scale, float bulletScale, float fireRateSecs, BulletAssets bulletAssets)
+    protected Weapon(Vector2 origin, Vector2 position, float direction, float scale, float bulletScale, float fireRateSecs, WeaponAssets assets, BulletAssets bulletAssets)
     {
         this.bullets = new List<Bullet>();
-        this.bulletAssets = bulletAssets;
+        this.bulletAssets = bulletAssets ?? throw new ArgumentNullException(nameof(bulletAssets));
+        this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.Direction = direction;
         this.Scale = scale;
         this.Position = position;
@@ -33,7 +35,7 @@ abstract class Weapon : IContext
         this.BulletScale = bulletScale;
         this.FireRateSecs = fireRateSecs;
         this.bulletAssets = bulletAssets;
-        this.animatedTexture = new AnimatedTexture(origin, assets.Weapon, Direction, scale, 0.5f, assets.FrameCount, assets.Fps);
+        this.animatedTexture = new AnimatedTexture(origin, Assets.Weapon, Direction, scale, 0.5f, Assets.FrameCount, Assets.Fps, false);
     }
 
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

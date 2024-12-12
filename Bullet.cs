@@ -7,7 +7,7 @@ namespace spacewar;
 
 abstract class Bullet : IContext
 {
-    public static BulletAssets Assets;
+    public BulletAssets Assets { get; private set; }
     public float Speed;
     public float Acceleration;
     public int Damage;
@@ -24,6 +24,7 @@ abstract class Bullet : IContext
             float direction,
             float speed,
             int damage,
+            BulletAssets assets,
             float scale = 1.0f
             )
     {
@@ -32,6 +33,7 @@ abstract class Bullet : IContext
         this.Damage = damage;
         this.Direction = direction;
         this.Position = position;
+        this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.animatedTexture = new AnimatedTexture(origin,
                 Assets.Bullet, direction, scale, Assets.Depth, Assets.FrameCount, Assets.Fps);
 

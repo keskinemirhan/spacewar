@@ -7,10 +7,11 @@ namespace spacewar;
 
 class PlayerSpaceship : Spaceship
 {
+    public static SpaceshipAssets StaticAssets { get; private set; }
     public PlayerSpaceship(Vector2 startingPosition, float startingDirection, float scale)
-        : base(new Vector2(PlayerSpaceship.Assets.Full.Width / 2, PlayerSpaceship.Assets.Full.Height / 2),
+        : base(new Vector2(PlayerSpaceship.StaticAssets.Full.Width / 2, PlayerSpaceship.StaticAssets.Full.Height / 2),
                 startingPosition, scale, startingDirection, 0, 200, 0, 10,
-                new RocketWeapon(startingPosition, startingDirection, scale, scale))
+                new RocketWeapon(startingPosition, startingDirection, scale, scale), PlayerSpaceship.StaticAssets)
     {
     }
 
@@ -58,10 +59,10 @@ class PlayerSpaceship : Spaceship
     {
         Spaceship.device = device;
         RocketWeapon.LoadContent(content, device);
-        Assets = new SpaceshipAssets();
-        Assets.Full = content.Load<Texture2D>("MainShipFull");
-        Assets.Damaged = content.Load<Texture2D>("MainShipFull");
-        Assets.SlightDamage = content.Load<Texture2D>("MainShipFull");
-        Assets.VeryDamaged = content.Load<Texture2D>("MainShipFull");
+        PlayerSpaceship.StaticAssets = new SpaceshipAssets();
+        PlayerSpaceship.StaticAssets.Full = content.Load<Texture2D>("MainShipFull");
+        PlayerSpaceship.StaticAssets.Damaged = content.Load<Texture2D>("MainShipFull");
+        PlayerSpaceship.StaticAssets.SlightDamage = content.Load<Texture2D>("MainShipFull");
+        PlayerSpaceship.StaticAssets.VeryDamaged = content.Load<Texture2D>("MainShipFull");
     }
 }

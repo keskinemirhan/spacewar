@@ -6,6 +6,7 @@ namespace spacewar;
 
 class Rocket : Bullet
 {
+    public static BulletAssets StaticAssets { get; private set; }
     public Rocket(
             Vector2 origin,
             Vector2 position,
@@ -14,16 +15,16 @@ class Rocket : Bullet
             float speed,
             int damage,
             float scale = 1.0f
-            ) : base(origin, position, acceleration, direction, speed, damage, scale)
+            ) : base(origin, position, acceleration, direction, speed, damage, StaticAssets, scale)
     {
     }
 
     public static new void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
-        Rocket.Assets = new BulletAssets();
+        Rocket.StaticAssets = new BulletAssets();
         Rocket.device = device;
-        Rocket.Assets.Bullet = content.Load<Texture2D>("ProjectileRocket");
-        Rocket.Assets.FrameCount = 3;
-        Rocket.Assets.Fps = 3;
+        Rocket.StaticAssets.Bullet = content.Load<Texture2D>("ProjectileRocket");
+        Rocket.StaticAssets.FrameCount = 3;
+        Rocket.StaticAssets.Fps = 3;
     }
 }
