@@ -10,11 +10,18 @@ public class Game1 : Game
     GameContext gameContext;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private ScoreboardManager scoreboardManager;
+    private Texture2D backgroundImage;
+    private AnimatedBackground background;
 
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
+        _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        _graphics.IsFullScreen = true;
         Content.RootDirectory = "Content";
+        this.scoreboardManager = new ScoreboardManager();
         IsMouseVisible = true;
     }
 
@@ -29,23 +36,51 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        backgroundImage = Content.Load<Texture2D>("space");
+        background = new AnimatedBackground(_graphics, 2, backgroundImage, 4, 1);
         MenuContext.LoadContent(Content, _graphics);
         GameContext.LoadContent(Content, _graphics);
+        ScoreboardContext.LoadContent(Content, _graphics);
         var menuContext = new MenuContext();
 
         currentContext = menuContext;
-        gameContext = new GameContext(_graphics);
         menuContext.startGame += (e, args) =>
         {
+            gameContext = new GameContext(scoreboardManager, _graphics);
             gameContext.Username = args.Username;
             currentContext = gameContext;
+            gameContext.endGame += (e, args) =>
+            {
+                var scoreboardContext = new ScoreboardContext(scoreboardManager, false);
+                currentContext = scoreboardContext;
+                scoreboardContext.closeScoreboard += (e, args) =>
+                {
+                    currentContext = menuContext;
+                };
+
+            };
         };
+
+        menuContext.openScoreboard += (e, args) =>
+        {
+            var scoreboardContext = new ScoreboardContext(scoreboardManager, false);
+            currentContext = scoreboardContext;
+            scoreboardContext.closeScoreboard += (e, args) =>
+            {
+                currentContext = menuContext;
+            };
+        };
+
+
+
     }
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             Exit();
+        background.UpdateFrame((float)gameTime.ElapsedGameTime.TotalSeconds);
+
         currentContext.Update(gameTime);
 
         // TODO: Add your update logic here
@@ -57,6 +92,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+        background.DrawFrame(_spriteBatch);
         currentContext.Draw(_spriteBatch, gameTime);
         _spriteBatch.End();
         // TODO: Add your drawing code here

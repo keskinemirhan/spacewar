@@ -15,7 +15,7 @@ class Rocket : Bullet
             float direction,
             float speed,
             int damage
-            ) : base(origin, position, scale, direction, speed, 600, acceleration, 0, damage, 0, StaticAssets)
+            ) : base(origin, position, scale, direction, speed, 600, acceleration, 0, damage, 2, StaticAssets)
     {
     }
 

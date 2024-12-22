@@ -8,10 +8,33 @@ namespace spacewar;
 class PlayerSpaceship : Spaceship
 {
     public static SpaceshipAssets StaticAssets { get; private set; }
+
+    private HealthBar healthBar;
     public PlayerSpaceship(Vector2 startingPosition, float startingDirection, float scale)
         : base(new Vector2(PlayerSpaceship.StaticAssets.Full.Width / 2, PlayerSpaceship.StaticAssets.Full.Height / 2),
-                startingPosition, scale, startingDirection, 0, 200, 0, 10, 24, new RocketWeapon(startingPosition, startingDirection, scale), PlayerSpaceship.StaticAssets)
+                startingPosition, scale, startingDirection, 0, 300, 0, 10, 12, 1000, new RocketWeapon(startingPosition, startingDirection, scale), PlayerSpaceship.StaticAssets)
     {
+
+        this.healthBar = new HealthBar(scale, Color.Blue, 80, 5, Position, Health, Health);
+    }
+
+    public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+    {
+        Weapon.Position = Position;
+        Weapon.Direction = Direction;
+        Weapon.Draw(spriteBatch, gameTime);
+        spriteBatch.Draw(
+                currentTexture,
+                Position,
+                null,
+                Color.White,
+                Direction,
+                Origin,
+                Scale,
+                SpriteEffects.None,
+                0f
+                );
+        this.healthBar.Draw(spriteBatch, gameTime);
     }
 
     public override void Update(GameTime gameTime)
@@ -51,13 +74,21 @@ class PlayerSpaceship : Spaceship
                 this.Shoot(gameTime);
             }
         }
-
+        healthBar.Update(gameTime);
+        healthBar.currentHealth = Health;
+        healthBar.Position = new Vector2(Position.X, Position.Y - 30);
+        if ((Position.X <= 0 || Position.X >= device.PreferredBackBufferWidth)
+            || (Position.Y <= 0 || Position.Y >= device.PreferredBackBufferHeight))
+        {
+            Speed = 0f;
+        }
     }
 
     public new static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
         Spaceship.device = device;
         RocketWeapon.LoadContent(content, device);
+        HealthBar.LoadContent(content, device);
         PlayerSpaceship.StaticAssets = new SpaceshipAssets();
         PlayerSpaceship.StaticAssets.Full = content.Load<Texture2D>("MainShipFull");
         PlayerSpaceship.StaticAssets.Damaged = content.Load<Texture2D>("MainShipFull");

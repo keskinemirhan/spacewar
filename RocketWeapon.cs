@@ -15,6 +15,7 @@ class RocketWeapon : Weapon
     private bool fired4 = false;
     private bool fired5 = false;
     private bool fired6 = false;
+    private int bulletDamage = 50;
 
     public new static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {
@@ -55,14 +56,14 @@ class RocketWeapon : Weapon
                         (float)(+30 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired6 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 11 && !fired5)
             {
@@ -70,14 +71,14 @@ class RocketWeapon : Weapon
                         (float)(-30 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired5 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 9 && !fired4)
             {
@@ -85,14 +86,14 @@ class RocketWeapon : Weapon
                         (float)(+25 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired4 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 7 && !fired3)
             {
@@ -100,14 +101,14 @@ class RocketWeapon : Weapon
                         (float)(-25 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired3 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 5 && !fired2)
             {
@@ -116,14 +117,14 @@ class RocketWeapon : Weapon
                         (float)(+20 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired2 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
             else if (attackTimer.Elapsed * (float)RocketWeapon.StaticAssets.Fps >= 3 && !fired1)
             {
@@ -131,19 +132,19 @@ class RocketWeapon : Weapon
                         (float)(-20 * Math.Sin(Direction)));
                 pos = new Vector2(Position.X + pos.X, Position.Y + pos.Y);
                 fired1 = true;
-                this.bullets.Add(new Rocket(
+                this.Bullets.Add(new Rocket(
                             new Vector2(Rocket.StaticAssets.Bullet.Width / 2, Rocket.StaticAssets.Bullet.Height / 2),
                             pos,
                             Scale,
                             100f,
                             Direction,
-                            150f,
-                            100));
+                            400f,
+                            bulletDamage));
             }
         }
     }
 
-    public RocketWeapon(Vector2 position, float direction, float scale = 1)
+    public RocketWeapon(Vector2 position, float direction, float scale)
          : base(new Vector2(RocketWeapon.StaticAssets.Weapon.Width / 2, RocketWeapon.StaticAssets.Weapon.Height / 2),
                 position, scale, direction, 3, RocketWeapon.StaticAssets, Rocket.StaticAssets)
     {

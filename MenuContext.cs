@@ -16,6 +16,7 @@ class MenuContext : IContext
     private static GraphicsDeviceManager device;
     TextInput usernameInput;
     public event EventHandler<StartGameEventArgs> startGame;
+    public event EventHandler<EventArgs> openScoreboard;
 
     public MenuContext()
     {
@@ -46,6 +47,10 @@ class MenuContext : IContext
         startButton.Update(gameTime);
         scoreboardButton.Update(gameTime);
         usernameInput.Update(gameTime);
+        if (scoreboardButton.IsClicked)
+        {
+            this.openScoreboard.Invoke(this, new EventArgs());
+        }
         if (startButton.IsClicked)
         {
             if (usernameInput.Content.Length == 0)

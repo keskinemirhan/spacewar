@@ -71,6 +71,7 @@ class Button : IGameObject
         {
             isHovered = true;
             if (mouseState.LeftButton == ButtonState.Pressed) IsClicked = true;
+            else IsClicked = false;
         }
         else
         {

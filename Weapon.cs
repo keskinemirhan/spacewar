@@ -9,7 +9,7 @@ abstract class Weapon : GameObject
 {
     public float FireRateSecs;
     public WeaponAssets Assets { get; private set; }
-    protected List<Bullet> bullets;
+    public List<Bullet> Bullets;
     public bool fired = false;
     protected AnimatedTexture animatedTexture;
     protected BulletAssets bulletAssets;
@@ -19,7 +19,7 @@ abstract class Weapon : GameObject
     protected Weapon(Vector2 origin, Vector2 position, float scale, float direction, float fireRateSecs, WeaponAssets assets, BulletAssets bulletAssets)
         : base(origin, position, scale, direction, 0, 0, 0, 0, 0)
     {
-        this.bullets = new List<Bullet>();
+        this.Bullets = new List<Bullet>();
         this.bulletAssets = bulletAssets ?? throw new ArgumentNullException(nameof(bulletAssets));
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         this.Direction = direction;
@@ -33,7 +33,7 @@ abstract class Weapon : GameObject
 
     public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        foreach (var bullet in bullets)
+        foreach (var bullet in Bullets)
         {
             bullet.Draw(spriteBatch, gameTime);
         }
@@ -58,7 +58,7 @@ abstract class Weapon : GameObject
         }
         else animatedTexture.Stop();
         var toBeRemoved = new List<Bullet>();
-        foreach (var bullet in bullets)
+        foreach (var bullet in Bullets)
         {
             if (bullet.Position.X < -bulletAssets.Bullet.Width / bulletAssets.FrameCount
                     || bullet.Position.X > device.PreferredBackBufferWidth + bulletAssets.Bullet.Width / bulletAssets.FrameCount
@@ -73,7 +73,7 @@ abstract class Weapon : GameObject
 
         foreach (var bullet in toBeRemoved)
         {
-            bullets.Remove(bullet);
+            Bullets.Remove(bullet);
         }
         animatedTexture.Rotation = Direction;
     }

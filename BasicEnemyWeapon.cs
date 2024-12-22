@@ -16,7 +16,7 @@ class BasicEnemyWeapon : Weapon
         if (!fired)
         {
             fired = true;
-            this.bullets.Add(new EnemyBullet(
+            this.Bullets.Add(new EnemyBullet(
                         new Vector2(EnemyBullet.StaticAssets.Bullet.Width / 2, EnemyBullet.StaticAssets.Bullet.Height / 2),
                         Position,
                         Scale,

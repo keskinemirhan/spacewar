@@ -11,20 +11,22 @@ abstract class Spaceship : GameObject
     public SpaceshipAssets Assets { get; private set; }
 
     protected Texture2D currentTexture;
-    protected Weapon weapon;
+    public Weapon Weapon;
+
 
     protected Spaceship(Vector2 origin, Vector2 position, float scale,
-            float direction, float speed, float maxSpeed, float acceleration, float deceleration, float collisionRange, Weapon weapon, SpaceshipAssets assets)
+            float direction, float speed, float maxSpeed, float acceleration, float deceleration, float collisionRange, int Health, Weapon weapon, SpaceshipAssets assets)
         : base(origin, position, scale, direction, speed, maxSpeed, acceleration, deceleration, collisionRange)
     {
-        this.weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
+        this.Weapon = weapon ?? throw new ArgumentNullException(nameof(weapon));
         this.Assets = assets ?? throw new ArgumentNullException(nameof(assets));
         currentTexture = Assets.Full;
+        this.Health = Health;
     }
 
     public void Shoot(GameTime gameTime)
     {
-        this.weapon.Shoot(gameTime);
+        this.Weapon.Shoot(gameTime);
     }
 
     public int TakeDamage(int amount)
@@ -42,13 +44,13 @@ abstract class Spaceship : GameObject
         var speedIncrease = elapsed * Speed;
         Position.Y -= (float)Math.Sin(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
         Position.X -= (float)Math.Cos(direction + 2 * MathHelper.Pi / 4) * speedIncrease;
+
     }
 
     public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
-        weapon.Position = Position;
-        weapon.Direction = Direction;
-        weapon.Draw(spriteBatch, gameTime);
+        Weapon.Position = Position;
+        Weapon.Direction = Direction;
 
         spriteBatch.Draw(
                 currentTexture,
@@ -61,12 +63,13 @@ abstract class Spaceship : GameObject
                 SpriteEffects.None,
                 0f
                 );
+        Weapon.Draw(spriteBatch, gameTime);
 
     }
 
     public override void Update(GameTime gameTime)
     {
-        weapon.Update(gameTime);
+        Weapon.Update(gameTime);
         this.Move(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
     }
 }
