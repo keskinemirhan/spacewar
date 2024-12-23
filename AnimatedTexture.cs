@@ -4,15 +4,39 @@ using Microsoft.Xna.Framework.Graphics;
 namespace spacewar;
 public class AnimatedTexture
 {
-    private int frameCount;
-    private Texture2D myTexture;
-    private float timePerFrame;
-    public int Frame { get; private set; }
-    private float totalElapsed;
-    private bool isPaused;
-    private bool loop;
+    public int FrameCount { get; private set; }
+    public int CurrentFrame { get; private set; }
+    public float CurrentFrameRatio
+    {
+        get
+        {
+            return (float)(CurrentFrame + 1) / (float)FrameCount;
+        }
+    }
+    public bool IsLastFrame
+    {
+        get
+        {
+            return CurrentFrame == FrameCount - 1;
+        }
+    }
+    public bool IsFirstFrame
+    {
+        get
+        {
+            return CurrentFrame == 0;
+        }
+    }
+    public bool AnimationEnded { get; private set; }
+    public bool IsPaused { get; private set; }
+    public bool Loop { get; private set; }
+    public bool Hidden { get; private set; }
     public float Rotation, Scale, Depth;
     public Vector2 Origin;
+
+    private float totalElapsed;
+    private Texture2D texture;
+    private float timePerFrame;
 
     public AnimatedTexture(Vector2 origin, Texture2D asset, float rotation, float scale, float depth, int frameCount, int framesPerSec, bool loop = true)
     {
@@ -20,51 +44,53 @@ public class AnimatedTexture
         this.Rotation = rotation;
         this.Scale = scale;
         this.Depth = depth;
-        this.frameCount = frameCount;
-        this.loop = loop;
+        this.FrameCount = frameCount;
+        this.Loop = loop;
         timePerFrame = (float)1 / framesPerSec;
-        Frame = 0;
+        CurrentFrame = 0;
         totalElapsed = 0;
-        isPaused = false;
-        myTexture = asset;
+        IsPaused = false;
+        texture = asset;
+        AnimationEnded = false;
+        Hidden = false;
     }
 
     public void UpdateFrame(float elapsed)
     {
-        if (isPaused)
+        if (IsPaused)
             return;
         totalElapsed += elapsed;
         if (totalElapsed > timePerFrame)
         {
-            Frame++;
-            if (loop) Frame %= frameCount;
-            else if (Frame >= frameCount) Frame = frameCount;
+            CurrentFrame++;
+            if (Loop) CurrentFrame %= FrameCount;
+            else if (CurrentFrame >= FrameCount)
+            {
+                CurrentFrame = FrameCount - 1;
+                AnimationEnded = true;
+            }
             totalElapsed -= timePerFrame;
         }
     }
 
     public void DrawFrame(SpriteBatch batch, Vector2 screenPos)
     {
-        if (Frame < frameCount) DrawFrame(batch, Frame, screenPos);
+        if (!Hidden) DrawFrame(batch, CurrentFrame, screenPos);
     }
 
     public void DrawFrame(SpriteBatch batch, int frame, Vector2 screenPos)
     {
-        int FrameWidth = myTexture.Width / frameCount;
+        int FrameWidth = texture.Width / FrameCount;
         Rectangle sourcerect = new Rectangle(FrameWidth * frame, 0,
-            FrameWidth, myTexture.Height);
-        batch.Draw(myTexture, screenPos, sourcerect, Color.White,
+            FrameWidth, texture.Height);
+        batch.Draw(texture, screenPos, sourcerect, Color.White,
             Rotation, Origin, Scale, SpriteEffects.None, Depth);
-    }
-
-    public bool IsPaused
-    {
-        get { return isPaused; }
     }
 
     public void Reset()
     {
-        Frame = 0;
+        AnimationEnded = false;
+        CurrentFrame = 0;
         totalElapsed = 0f;
     }
 
@@ -76,12 +102,28 @@ public class AnimatedTexture
 
     public void Play()
     {
-        isPaused = false;
+        AnimationEnded = false;
+        IsPaused = false;
     }
 
     public void Pause()
     {
-        isPaused = true;
+        IsPaused = true;
+    }
+
+    public void Hide()
+    {
+        Hidden = true;
+    }
+
+    public void Show()
+    {
+        Hidden = false;
+    }
+
+    public void SwitchLoop(bool loop)
+    {
+        Loop = loop;
     }
 }
 
