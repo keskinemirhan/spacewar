@@ -21,7 +21,7 @@ class StrongEnemyWeapon : Weapon
                         Position,
                         Scale,
                         Direction,
-                        70,
+                        150,
                         200
                         ));
         }

@@ -15,7 +15,7 @@ class RocketWeapon : Weapon
     private bool fired4 = false;
     private bool fired5 = false;
     private bool fired6 = false;
-    private int bulletDamage = 50;
+    private int bulletDamage = 100;
 
     public new static void LoadContent(ContentManager content, GraphicsDeviceManager device)
     {

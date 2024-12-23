@@ -13,7 +13,6 @@ class ScoreboardContext : IContext
     public static GraphicsDeviceManager device;
     private bool gameOver;
     private int playerScore;
-    private string title;
     private string scores;
     private ScoreboardManager scoreboardManager;
     public event EventHandler<EventArgs> closeScoreboard;

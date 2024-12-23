@@ -12,7 +12,6 @@ public class AnimatedBackground
     private bool isPaused;
     private bool loop;
     public float Rotation, Scale, Depth;
-    private Rectangle destRect;
     public Vector2 Origin;
     private GraphicsDeviceManager device;
     private int frameWidth;
