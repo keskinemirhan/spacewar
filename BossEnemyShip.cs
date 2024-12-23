@@ -12,7 +12,7 @@ class BossEnemyShip : EnemyShip
 
     public BossEnemyShip(Vector2 spawn, float scale, float direction)
         : base(new Vector2(StaticAssets.Full.Width / 2, StaticAssets.Full.Height / 2),
-                 spawn, scale, direction, 10, 10, 0, 0, 50, 500, 500, new BossEnemyWeapon(spawn, direction, scale, new Vector2(0, 0)), StaticAssets)
+                 spawn, scale, direction, 10, 10, 0, 0, 50, 1500, 1500, new BossEnemyWeapon(spawn, direction, scale, new Vector2(0, 0)), StaticAssets)
     {
         this.healthBar = new HealthBar(scale, Color.Red, 60, 3, Position, Health, Health);
         ownWeapon = (BossEnemyWeapon)Weapon;

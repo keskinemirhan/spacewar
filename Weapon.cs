@@ -13,6 +13,7 @@ abstract class Weapon : GameObject
     public bool fired = false;
     protected AnimatedTexture animatedTexture;
     protected BulletAssets bulletAssets;
+    public bool Hidden = false;
 
     private GameTimer fireTimer = new GameTimer();
 
@@ -37,7 +38,7 @@ abstract class Weapon : GameObject
         {
             bullet.Draw(spriteBatch, gameTime);
         }
-        animatedTexture.DrawFrame(spriteBatch, Position);
+        if (!Hidden) animatedTexture.DrawFrame(spriteBatch, Position);
     }
 
     public abstract void Shoot(GameTime gameTime);

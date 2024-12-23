@@ -7,7 +7,7 @@ class StrongEnemyBullet : Bullet
 {
     public static BulletAssets StaticAssets { get; private set; }
     public StrongEnemyBullet(Vector2 origin, Vector2 position, float scale, float direction, float speed, int damage)
-         : base(origin, position, scale, direction, speed, speed, 0, 0, damage, 2, StaticAssets)
+         : base(origin, position, scale, direction, speed, speed, 0, 0, damage, 15, StaticAssets)
     {
     }
 
