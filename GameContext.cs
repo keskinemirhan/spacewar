@@ -95,8 +95,6 @@ class GameContext : IContext
         {
             this.EndGame();
         }
-
-
     }
 
     public void EndGame()

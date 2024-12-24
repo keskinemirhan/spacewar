@@ -51,7 +51,7 @@ public class Game1 : Game
             currentContext = gameContext;
             gameContext.endGame += (e, args) =>
             {
-                var scoreboardContext = new ScoreboardContext(scoreboardManager, false);
+                var scoreboardContext = new ScoreboardContext(scoreboardManager, true, args.PlayerScore);
                 currentContext = scoreboardContext;
                 scoreboardContext.closeScoreboard += (e, args) =>
                 {

@@ -23,7 +23,7 @@ class ScoreboardContext : IContext
         this.playerScore = playerScore;
         this.scoreboardManager = scoreboardManager;
         var scoreList = scoreboardManager.GetSorted();
-        scores = gameOver ? "Game Over\nYour Score: \n\n" + playerScore : "Scoreboard\n\n";
+        scores = gameOver ? "Game Over\nYour Score: " + playerScore + "\n" : "Scoreboard\n\n";
         var count = 0;
         foreach (var score in scoreList)
         {
